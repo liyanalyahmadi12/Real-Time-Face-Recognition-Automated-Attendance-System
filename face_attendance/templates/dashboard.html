@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Today ({{ today }})</h1>
+<div class="cards">
+  <div class="card"><div class="kpi">{{ users_count }}</div><div class="kpi-label">Registered Users</div></div>
+  <div class="card"><div class="kpi">{{ today_count }}</div><div class="kpi-label">Records Today</div></div>
+  <div class="card"><div class="kpi">{{ present_morning }}</div><div class="kpi-label">Present Morning</div></div>
+  <div class="card"><div class="kpi">{{ late_morning }}</div><div class="kpi-label">Late Morning</div></div>
+</div>
+<form class="reportbar" action="{{ url_for('report_week') }}" method="get" style="margin-top:18px;">
+  <label>Week of (any day):</label>
+  <input type="date" name="start">
+  <button type="submit">Download Weekly Excel</button>
+</form>
+{% endblock %}

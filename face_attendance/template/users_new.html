@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>New User</h1>
+<form class="form" action="" method="post" enctype="multipart/form-data">
+  <label>Name</label>
+  <input type="text" name="name" required />
+  <label>Photo (.jpg/.png)</label>
+  <input type="file" name="photo" accept=".jpg,.jpeg,.png" required />
+  <p class="hint">The photo is saved to <code>seed_images/</code>. Run <code>seed_users.py</code> to generate embeddings.</p>
+  <button type="submit">Create</button>
+</form>
+{% endblock %}

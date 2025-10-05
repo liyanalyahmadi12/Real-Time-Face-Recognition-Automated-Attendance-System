@@ -1,0 +1,12 @@
+{% extends "base.html" %}{% block content %}
+<div class="headrow">
+  <h1>Users</h1>
+  <a class="btn" href="{{ url_for('users_new') }}">+ Add User</a>
+</div>
+<table class="table">
+  <thead><tr><th>ID</th><th>Name</th></tr></thead>
+  <tbody>
+    {% for u in rows %}<tr><td>{{u.user_id}}</td><td>{{u.name}}</td></tr>{% endfor %}
+  </tbody>
+</table>
+{% endblock %}

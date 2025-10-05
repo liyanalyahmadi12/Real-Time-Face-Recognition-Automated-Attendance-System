@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Analytics ({{ period }})</h1>
+<p>From {{ start_date }} to {{ end_date }}</p>
+
+<table class="table">
+  <thead><tr><th>Date</th><th>Present</th><th>Absent</th><th>Late</th><th>On Time</th></tr></thead>
+  <tbody>
+  {% for d, stat in daily_stats.items() %}
+    <tr>
+      <td>{{ d }}</td>
+      <td>{{ stat.present }}</td>
+      <td>{{ stat.absent }}</td>
+      <td>{{ stat.late }}</td>
+      <td>{{ stat.on_time }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h1>Dashboard — {{ (today or now().date()).strftime("%A, %b %d") }}</h1>
+
+{% set m = metrics or {} %}
+
+<div class="cards">
+  <div class="card"><div class="k">Total Users</div><div class="v">{{ m.total_users or 0 }}</div></div>
+  <div class="card"><div class="k">Present</div><div class="v">{{ m.present_today or 0 }}</div></div>
+  <div class="card"><div class="k">Absent</div><div class="v">{{ m.absent_today or 0 }}</div></div>
+  <div class="card"><div class="k">Late</div><div class="v">{{ m.late_today or 0 }}</div></div>
+</div>
+
+<div class="row">
+  <h3>Late Today</h3>
+  <ul>
+    {% if m.late_employees and m.late_employees|length %}
+      {% for e in m.late_employees %}
+        <li><strong>{{ e.name }}</strong> at {{ e.time }}</li>
+      {% endfor %}
+    {% else %}
+      <li>No late arrivals recorded yet.</li>
+    {% endif %}
+  </ul>
+</div>
+
+<div class="row">
+  <h3>Absent Today</h3>
+  <ul>
+    {% if m.absent_employees and m.absent_employees|length %}
+      {% for n in m.absent_employees %}
+        <li>{{ n }}</li>
+      {% endfor %}
+    {% else %}
+      <li>Everyone present 🎉</li>
+    {% endif %}
+  </ul>
+</div>
+
+<div class="row">
+  <h3>Weekly Overview</h3>
+  <canvas id="weeklyChart" height="300"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- Safe JSON payload for the chart -->
+<script id="weekly-data" type="application/json">
+{{
+  {
+    "labels":  (m.weekly_labels  if m.weekly_labels  is defined else []),
+    "present": (m.weekly_present if m.weekly_present is defined else []),
+    "absent":  (m.weekly_absent  if m.weekly_absent  is defined else []),
+    "late":    (m.weekly_late    if m.weekly_late    is defined else [])
+  } | tojson
+}}
+</script>
+
+<script>
+(() => {
+  const el = document.getElementById('weekly-data');
+  if (!el) return;
+
+  let data = {};
+  try { data = JSON.parse(el.textContent || '{}'); } catch (_) {}
+
+  const labels      = Array.isArray(data.labels)  ? data.labels  : [];
+  const presentData = Array.isArray(data.present) ? data.present : [];
+  const absentData  = Array.isArray(data.absent)  ? data.absent  : [];
+  const lateData    = Array.isArray(data.late)    ? data.late    : [];
+
+  if (!labels.length) return;
+
+  const ctx = document.getElementById('weeklyChart');
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        { label: 'Present', data: presentData },
+        { label: 'Absent',  data: absentData  },
+        { label: 'Late',    data: lateData    },
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: { legend: { position: 'bottom' } },
+      scales: { y: { beginAtZero: true, ticks: { precision: 0 } } }
+    }
+  });
+})();
+</script>
+
+{% endblock %}

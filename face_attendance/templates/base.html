@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>{{ title or "Attendance Admin" }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+<nav class="topbar">
+  <div class="brand">
+    <img src="{{ url_for('static', filename='logo.png') }}" onerror="this.style.display='none'">
+    <span>Attendance Admin</span>
+  </div>
+  <div class="navlinks">
+    <a href="{{ url_for('home') }}">Dashboard</a>
+    <a href="{{ url_for('users') }}">Users</a>
+    <a href="{{ url_for('attendance_view') }}">Attendance</a>
+  </div>
+</nav>
+<main class="container">
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% for category, message in messages %}
+    <div class="flash {{category}}">{{message}}</div>
+  {% endfor %}
+{% endwith %}
+{% block content %}{% endblock %}
+</main>
+</body>
+</html>

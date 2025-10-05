@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Users</h1>
+
+<form action="{{ url_for('users_add') }}" method="post" enctype="multipart/form-data" class="card form">
+  <label>Name <input name="name" required></label>
+  <label>Photo <input type="file" name="photo" accept="image/*" required></label>
+  <button type="submit">Enroll</button>
+</form>
+
+<table class="table">
+  <thead><tr><th>ID</th><th>Name</th><th>Actions</th></tr></thead>
+  <tbody>
+  {% for u in users %}
+    <tr>
+      <td>{{ u.user_id }}</td>
+      <td>{{ u.name }}</td>
+      <td>
+        <form action="{{ url_for('users_delete', user_id=u.user_id) }}" method="post" onsubmit="return confirm('Delete {{u.name}}?')">
+          <button class="danger">Delete</button>
+        </form>
+      </td>
+    </tr>
+  {% else %}
+    <tr><td colspan="3">No users yet.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

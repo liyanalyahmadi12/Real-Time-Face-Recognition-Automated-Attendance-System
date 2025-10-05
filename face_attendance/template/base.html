@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>{{ title or "Attendance Admin" }}</title>
+
+  <!-- Minimal inline styles so text is visible even if your CSS doesn't load -->
+  <style>
+    :root { color-scheme: dark; }
+    body{ margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+          background:#0f172a; color:#e5e7eb; }
+    header{ display:flex; gap:24px; align-items:center; padding:14px 20px; background:#0b1220; border-bottom:1px solid #1f2937;}
+    header a{ color:#cbd5e1; text-decoration:none; padding:6px 10px; border-radius:8px;}
+    header a.active, header a:hover{ background:#1f2937; color:#fff;}
+    main{ padding:24px; max-width:1200px; margin:0 auto; }
+    .cards{ display:grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap:16px; margin:18px 0;}
+    .card{ background:#111827; border:1px solid #1f2937; border-radius:14px; padding:18px; }
+    .card .k{ color:#9ca3af; font-size:14px; }
+    .card .v{ font-size:32px; font-weight:700; margin-top:6px; }
+    .row{ margin:18px 0; }
+    canvas{ background:#0b1220; border:1px solid #1f2937; border-radius:12px; padding:8px; }
+  </style>
+
+  <!-- If you have a static stylesheet you can still include it -->
+  {# <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}"> #}
+</head>
+<body>
+  <header>
+    <strong style="color:#fff">{{ APP_TITLE or "Attendance Admin" }}</strong>
+    <nav>
+      <a href="{{ url_for('home') }}" class="{% if request.endpoint=='home' %}active{% endif %}">Dashboard</a>
+      <a href="{{ url_for('users_page') }}" class="{% if request.endpoint=='users_page' %}active{% endif %}">Users</a>
+      <a href="{{ url_for('attendance_page') }}" class="{% if request.endpoint=='attendance_page' %}active{% endif %}">Attendance</a>
+      <a href="{{ url_for('analytics_page') }}" class="{% if request.endpoint=='analytics_page' %}active{% endif %}">Analytics</a>
+    </nav>
+    <span style="margin-left:auto; color:#9ca3af">{{ now().strftime("%Y-%m-%d %H:%M") }}</span>
+  </header>
+
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

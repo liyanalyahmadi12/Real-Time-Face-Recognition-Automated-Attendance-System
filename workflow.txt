@@ -1,0 +1,44 @@
+face-attendance/
+├─ live_engine.py                # Recognition engine (real-time, sub-second loop)
+├─ streamlit_dashboard.py        # Reporting dashboard (batch & individual)
+├─ db.py
+├─ slack_notify.py
+├─ check_attendance.py
+├─ db_extras.py
+├─ main.py                         # DB init + SQLAlchemy models & queries
+├─ attendance_logic.py           # Gate windows, insert/update logic (G6)
+├─ recognition.py                # DeepFace/FaceNet helpers (G2/G9)
+├─ seed_users.py                 # Register initial 4 users + embeddings
+├─ template/
+│  ├─ analytic.html
+│  ├─ attendance.html
+│  ├─ base.html
+│  └─ dashbored_enhanced.html
+|  |_ layout.html
+|  |_login.html
+|  |_users.html
+|  |_users_new.html
+|
+├─ .env
+|
+├─ schema.sql                    # O pure-SQL schema
+├─ .env                          # DB path, model settings, thresholds
+├─ requirements.txt
+└─ static/
+    ├─ last_frame.jpg
+    ├─ last_status.jason
+    ├─ styles.css
+
+
+┌─────────────────┐         ┌──────────────────┐
+│  live_engine.py │────────▶│  Database        │
+│  (Face Recog)   │         │  (attendance.db) │
+└─────────────────┘         └──────────────────┘
+         │                           ▲
+         │ writes files              │ reads
+         ▼                           │
+┌─────────────────┐         ┌──────────────────┐
+│  static/        │────────▶│ flask_dashboard  │
+│  last_frame.jpg │         │  (Web UI)        │
+│  last_status.json│         └──────────────────┘
+└─────────────────┘

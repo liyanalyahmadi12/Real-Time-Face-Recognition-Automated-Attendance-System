@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Attendance — {{ date }}</h1>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>User</th><th>Gate 1</th><th>Gate 2</th><th>Gate 3</th><th>Gate 4</th><th>Quarter</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for r in rows %}
+      <tr>
+        <td>{{ r.name }}</td>
+        <td class="{{ r.g1[1] }}">{{ r.g1[0] }}</td>
+        <td class="{{ r.g2[1] }}">{{ r.g2[0] }}</td>
+        <td class="{{ r.g3[1] }}">{{ r.g3[0] }}</td>
+        <td class="{{ r.g4[1] }}">{{ r.g4[0] }}</td>
+        <td>{{ r.quarter }}</td>
+      </tr>
+    {% else %}
+      <tr><td colspan="6">No records for this date.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

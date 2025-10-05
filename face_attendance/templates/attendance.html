@@ -1,0 +1,28 @@
+{% extends "base.html" %}{% block content %}
+<div class="headrow">
+  <h1>Attendance</h1>
+  <form class="inline" method="get">
+    <input type="date" name="date" value="{{ qdate }}">
+    <button>Go</button>
+  </form>
+  <a class="btn" href="{{ url_for('report_week') }}">Weekly Excel</a>
+</div>
+<table class="table">
+<thead><tr><th>User</th><th>G1</th><th>G2</th><th>G3</th><th>G4</th><th>Notes</th></tr></thead>
+<tbody>
+{% for rec, user in rows %}
+  {% set s1 = status_fn(1, rec.checkin1_time) %}
+  {% set s2 = status_fn(2, rec.checkin2_time) %}
+  {% set s3 = status_fn(3, rec.checkin3_time) %}
+  {% set s4 = status_fn(4, rec.checkin4_time) %}
+  <tr>
+    <td>{{ user.name }}</td>
+    <td class="{{ 'absent' if s1=='ABSENT' else ('late' if s1=='LATE' else 'ok') }}">{{ rec.checkin1_time or '-' }}</td>
+    <td class="{{ 'absent' if s2=='ABSENT' else ('late' if s2=='LATE' else 'ok') }}">{{ rec.checkin2_time or '-' }}</td>
+    <td class="{{ 'absent' if s3=='ABSENT' else ('late' if s3=='LATE' else 'ok') }}">{{ rec.checkin3_time or '-' }}</td>
+    <td class="{{ 'absent' if s4=='ABSENT' else ('late' if s4 in ('LATE','EARLY') else 'ok') }}">{{ rec.checkin4_time or '-' }}</td>
+    <td></td>
+  </tr>
+{% endfor %}
+</tbody></table>
+{% endblock %}
